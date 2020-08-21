@@ -1,6 +1,3 @@
-# TODO:
-# Support armv6 or aarch64 as build arg
-#
 FROM ubuntu:20.04
 
 ENV LANGUAGE="en_US.UTF-8" \
@@ -27,8 +24,8 @@ RUN apt-get install -y swift-lang=$RUNTIME-ubuntu-focal
 
 # Switch to build-user and their home dir.
 USER $UID
-WORKDIR /home/build-user
 CMD echo `swift -version`
 
 # Project directory volume
 VOLUME ["/home/build-user/project"]
+WORKDIR /home/build-user/project
