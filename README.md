@@ -1,26 +1,21 @@
-# Swift for ARM Buildbox
+# Compile Swift apps for ARM / Raspberry Pi on your mac
 
-Build and test Swift apps for Raspberry Pi (and other ARM64 / aarch64 computers)
-on a Mac or Windows with the swift-builbox docker image!
+Swift Builbox is a Swift toolchain wrapper, available as a docker image.
 
-Swift Buildbox provides Docker images in multiple architectures with different
-Swift runtimes that can compile and test your projects, without installing Swift
-on the target machine itself.
-
-The buildbox uses Swift for ARM from the
-[Community Swift for ARM repository](https://packagecloud.io/swift-arm/release).
-
-## Usage
-
-### `swift build`
+Assuming you're in the Swift project directory:
 
 ```bash
-docker run xnutsive/swift-buildbox:arm64-5.2.5-6 -it -v $(pwd):/home/build-user/project swift build
+docker run xnutsive/swift-buildbox:5.2.5-arm64 -it -v $(pwd):$(pwd) -w $(pwd) swift build
 ```
 
 This should download the Docker image and run `swift build` for the current
 directory. The resulting binaries will be stored in the `.build` directory as
 usual.
+
+## Supported architectures
+
+Use `xnutsive/swift-buildbox:5.1.5-armhf` if you want to run your apps in Raspbian, or
+`xnutsive/swift-builbox:5.2.5-arm64` if you installed an arm64 OS on your Pi.
 
 ### Gotchas and static linking
 
@@ -35,9 +30,3 @@ If the plan is to build binaries that don't require Swift stdlib installed, then
 you'd want to link it statically. To do that, you'd want to run
 `swift build -c release --static-swift-stdlib -Xswiftc -static-stdlib`. Note
 that the binary size will be hube: a simple hello world example binary is 34M.
-
-### Known issues
-
-The `armhf` version currently doesn't work, but that's just a problem of making
-sure that the repo has a certain Swift runtime package, taking it's name, and
-making sure the `Makefile` sets the right env variables.
